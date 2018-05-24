@@ -1,3 +1,5 @@
+This is the code for a stopwatch I made. I figured we could add it to the timer in case the users want to time themselves, for example like how long do they take to answer a question etc.
+
 package timertest;
 
 public class Frame extends javax.swing.JFrame {
