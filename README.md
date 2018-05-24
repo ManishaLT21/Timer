@@ -4,7 +4,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.Timer;
 import java.util.TimerTask;
 
-
 public class SatActTimer extends javax.swing.JFrame {
 
     int minutes = 0;
@@ -27,31 +26,75 @@ public class SatActTimer extends javax.swing.JFrame {
         startPage.setVisible(true);
         if (testNumber == 0) {
             testMapLabel.setText("English");
+            testMapLabel2.setText("Time:");
+            testMapLabel3.setText("Questions:");
+            testMapLabel4.setText("75 Questions");
+            testMapLabel5.setText("45 Minutes");
         }
         if (testNumber == 1) {
             testMapLabel.setText("Math");
+            testMapLabel2.setText("Time:");
+            testMapLabel3.setText("Questions:");
+            testMapLabel4.setText("60 Questions");
+            testMapLabel5.setText("60 Minutes");
         }
         if (testNumber == 2) {
             testMapLabel.setText("Reading");
+            testMapLabel2.setText("Time:");
+            testMapLabel3.setText("Questions:");
+            testMapLabel4.setText("40 Questions");
+            testMapLabel5.setText("35 Minutes");
         }
         if (testNumber == 3) {
             testMapLabel.setText("Science");
+            testMapLabel2.setText("Time:");
+            testMapLabel3.setText("Questions:");
+            testMapLabel4.setText("40 Questions");
+            testMapLabel5.setText("35 Minutes");
+        }
+        if (testNumber == 10) {
+            testMapLabel.setText("Reading");
+            testMapLabel2.setText("Time:");
+            testMapLabel3.setText("Questions:");
+            testMapLabel4.setText("52 Questions");
+            testMapLabel5.setText("65 Minutes");
+        }
+        if (testNumber == 11) {
+            testMapLabel.setText("English");
+            testMapLabel2.setText("Time:");
+            testMapLabel3.setText("Questions:");
+            testMapLabel4.setText("44 Questions");
+            testMapLabel5.setText("35 Minutes");
+        }
+        if (testNumber == 12) {
+            testMapLabel.setText("Math");
+            testMapLabel2.setText("Time:");
+            testMapLabel3.setText("Questions:");
+            testMapLabel4.setText("55 Questions");
+            testMapLabel5.setText("55 Minutes");
+        }
+        if (testNumber == 13) {
+            testMapLabel.setText("Math");
+            testMapLabel2.setText("Time:");
+            testMapLabel3.setText("Questions:");
+            testMapLabel4.setText("13 Questions");
+            testMapLabel5.setText("25 Minutes");
         }
     }
 
     public void loadTimerPage() {
         page1.setVisible(false);
         startPage.setVisible(false);
-         endPage.setVisible(false);
+        endPage.setVisible(false);
         timerPage.setVisible(true);
     }
-    
+
     public void loadEndPage() {
         page1.setVisible(false);
         startPage.setVisible(false);
         timerPage.setVisible(false);
         endPage.setVisible(true);
-        
+
     }
 
     public SatActTimer() {
@@ -66,15 +109,31 @@ public class SatActTimer extends javax.swing.JFrame {
         }
         if (testNumber == 1) {
             loadTimerPage();
-            activateTimer(45);
+            activateTimer(60);
         }
         if (testNumber == 2) {
             loadTimerPage();
-            activateTimer(45);
+            activateTimer(35);
         }
         if (testNumber == 3) {
             loadTimerPage();
-            activateTimer(45);
+            activateTimer(35);
+        }
+        if (testNumber == 10) {
+            loadTimerPage();
+            activateTimer(65);
+        }
+        if (testNumber == 11) {
+            loadTimerPage();
+            activateTimer(35);
+        }
+        if (testNumber == 12) {
+            loadTimerPage();
+            activateTimer(55);
+        }
+        if (testNumber == 13) {
+            loadTimerPage();
+            activateTimer(25);
         }
     }
 
@@ -94,9 +153,9 @@ public class SatActTimer extends javax.swing.JFrame {
                 if (minutes == -1) {
                     timer.cancel();
                     testNumber++;
-                    if (testNumber == 4 || testNumber ==14) {
+                    if (testNumber == 4 || testNumber == 14) {
                         loadEndPage();
-                    }else{
+                    } else {
                         loadStartPage();
                     }
 
@@ -117,6 +176,10 @@ public class SatActTimer extends javax.swing.JFrame {
         startPage = new javax.swing.JPanel();
         testMapLabel = new java.awt.Label();
         startButton = new java.awt.Button();
+        testMapLabel2 = new java.awt.Label();
+        testMapLabel3 = new java.awt.Label();
+        testMapLabel4 = new java.awt.Label();
+        testMapLabel5 = new java.awt.Label();
         timerPage = new javax.swing.JPanel();
         timerSecondLabel = new java.awt.Label();
         timerMinuteLabel = new java.awt.Label();
@@ -184,15 +247,34 @@ public class SatActTimer extends javax.swing.JFrame {
             }
         });
 
+        testMapLabel2.setText("Time:");
+
+        testMapLabel3.setText("Questions:");
+
+        testMapLabel4.setName(""); // NOI18N
+        testMapLabel4.setText("75 Questions");
+
+        testMapLabel5.setText("45 Minutes");
+
         javax.swing.GroupLayout startPageLayout = new javax.swing.GroupLayout(startPage);
         startPage.setLayout(startPageLayout);
         startPageLayout.setHorizontalGroup(
             startPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(startPageLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(testMapLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(startPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(startPageLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(testMapLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(startPageLayout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(startPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(testMapLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(testMapLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(33, 33, 33)))
+                .addGroup(startPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(testMapLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(testMapLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(939, Short.MAX_VALUE))
         );
         startPageLayout.setVerticalGroup(
@@ -200,7 +282,15 @@ public class SatActTimer extends javax.swing.JFrame {
             .addGroup(startPageLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(testMapLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 516, Short.MAX_VALUE)
+                .addGap(59, 59, 59)
+                .addGroup(startPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(testMapLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(testMapLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(37, 37, 37)
+                .addGroup(startPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(testMapLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(testMapLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 380, Short.MAX_VALUE)
                 .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(21, 21, 21))
         );
@@ -333,6 +423,7 @@ public class SatActTimer extends javax.swing.JFrame {
 
     private void SatButtonActionPerformed(java.awt.event.ActionEvent evt) {                                          
         loadStartPage();
+        testNumber = testNumber + 10;
     }                                         
 
 
@@ -349,6 +440,10 @@ public class SatActTimer extends javax.swing.JFrame {
     private java.awt.Button startButton;
     private javax.swing.JPanel startPage;
     private java.awt.Label testMapLabel;
+    private java.awt.Label testMapLabel2;
+    private java.awt.Label testMapLabel3;
+    private java.awt.Label testMapLabel4;
+    private java.awt.Label testMapLabel5;
     private java.awt.Label timerMinuteLabel;
     private javax.swing.JPanel timerPage;
     private java.awt.Label timerSecondLabel;
