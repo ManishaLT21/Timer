@@ -8,7 +8,11 @@ public class SatActTimer extends javax.swing.JFrame {
 
     int minutes = 0;
     int seconds = 0;
+    int subSeconds = 0;
     int testNumber = 0;
+    int questionNumber = 0;
+    int numberOfQuestions = 0;
+    int broadcastNext = 0;
 
     public void loadHomePage() {
         testNumber = 0;
@@ -106,34 +110,46 @@ public class SatActTimer extends javax.swing.JFrame {
         if (testNumber == 0) {
             loadTimerPage();
             activateTimer(45);
+            questionNumber = 0;
+            numberOfQuestions = 60;
+            questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions));
+            activateSecondaryTimer(30);
+
         }
         if (testNumber == 1) {
             loadTimerPage();
             activateTimer(60);
+            activateSecondaryTimer(30);
         }
         if (testNumber == 2) {
             loadTimerPage();
             activateTimer(35);
+            activateSecondaryTimer(30);
         }
         if (testNumber == 3) {
             loadTimerPage();
             activateTimer(35);
+            activateSecondaryTimer(30);
         }
         if (testNumber == 10) {
             loadTimerPage();
             activateTimer(65);
+            activateSecondaryTimer(30);
         }
         if (testNumber == 11) {
             loadTimerPage();
             activateTimer(35);
+            activateSecondaryTimer(30);
         }
         if (testNumber == 12) {
             loadTimerPage();
             activateTimer(55);
+            activateSecondaryTimer(30);
         }
         if (testNumber == 13) {
             loadTimerPage();
             activateTimer(25);
+            activateSecondaryTimer(30);
         }
     }
 
@@ -162,7 +178,23 @@ public class SatActTimer extends javax.swing.JFrame {
                 }
                 seconds--;
             }
-        }, 1, 1);
+        }, 1000, 1000);
+    }
+
+    public void activateSecondaryTimer(int answerTime) {
+        subSeconds = answerTime;
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                if(broadcastNext == 1){
+                    subSeconds = subSeconds + answerTime;
+                    broadcastNext = 0;
+                }
+                secondaryTimerLabel.setText(String.valueOf(subSeconds));
+                subSeconds--;
+            }
+        }, 1000, 1000);
     }
 
     @SuppressWarnings("unchecked")
@@ -184,13 +216,16 @@ public class SatActTimer extends javax.swing.JFrame {
         timerSecondLabel = new java.awt.Label();
         timerMinuteLabel = new java.awt.Label();
         label1 = new java.awt.Label();
+        secondaryTimerLabel = new java.awt.Label();
+        counterLabel = new java.awt.Label();
+        nextButton = new javax.swing.JButton();
+        questionNumberLabel = new java.awt.Label();
         intermissionLabel = new java.awt.Label();
         endPage = new javax.swing.JPanel();
         finishedLabel = new java.awt.Label();
         returnButton = new java.awt.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1920, 1080));
 
         SatButton.setLabel("SAT");
         SatButton.addActionListener(new java.awt.event.ActionListener() {
@@ -269,8 +304,7 @@ public class SatActTimer extends javax.swing.JFrame {
                         .addGap(31, 31, 31)
                         .addGroup(startPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(testMapLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(testMapLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(33, 33, 33)))
+                            .addComponent(testMapLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGroup(startPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(testMapLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(startButton, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -306,29 +340,65 @@ public class SatActTimer extends javax.swing.JFrame {
         label1.setFont(new java.awt.Font("Dialog", 0, 200)); // NOI18N
         label1.setText(":");
 
+        secondaryTimerLabel.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
+
+        counterLabel.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
+
+        nextButton.setText("Next");
+        nextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nextButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout timerPageLayout = new javax.swing.GroupLayout(timerPage);
         timerPage.setLayout(timerPageLayout);
         timerPageLayout.setHorizontalGroup(
             timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(timerPageLayout.createSequentialGroup()
                 .addContainerGap(20, Short.MAX_VALUE)
-                .addComponent(timerMinuteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(timerSecondLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, timerPageLayout.createSequentialGroup()
+                        .addComponent(timerMinuteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(secondaryTimerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(timerPageLayout.createSequentialGroup()
+                                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(timerSecondLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, timerPageLayout.createSequentialGroup()
+                        .addComponent(counterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(172, 172, 172))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, timerPageLayout.createSequentialGroup()
+                        .addComponent(nextButton)
+                        .addGap(79, 79, 79)
+                        .addComponent(questionNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36))))
         );
         timerPageLayout.setVerticalGroup(
             timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(timerPageLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(timerSecondLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(timerMinuteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(timerPageLayout.createSequentialGroup()
-                .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGroup(timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(timerPageLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(timerSecondLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(timerMinuteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(59, 59, 59)
+                .addComponent(secondaryTimerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
+                .addComponent(counterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(timerPageLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(nextButton)
+                        .addGap(70, 70, 70))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, timerPageLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(questionNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(84, 84, 84))))
         );
 
         finishedLabel.setText("Congradualtions! You finished the test!");
@@ -372,14 +442,14 @@ public class SatActTimer extends javax.swing.JFrame {
                 .addComponent(intermissionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(395, 395, 395))
             .addGroup(layout.createSequentialGroup()
+                .addGap(50, 50, 50)
+                .addComponent(timerPage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
-                        .addComponent(timerPage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(334, 334, 334)
                         .addComponent(startPage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(1290, 1290, 1290)
+                        .addGap(684, 684, 684)
                         .addComponent(endPage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(939, Short.MAX_VALUE))
         );
@@ -394,16 +464,14 @@ public class SatActTimer extends javax.swing.JFrame {
                         .addGap(271, 271, 271)
                         .addComponent(intermissionLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(35, 35, 35)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(timerPage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(341, 341, 341))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(startPage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(75, 75, 75)
-                        .addComponent(endPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(53, 53, 53))))
+                .addComponent(startPage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(75, 75, 75)
+                .addComponent(endPage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(53, 53, 53))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(timerPage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
         );
 
         pack();
@@ -426,17 +494,29 @@ public class SatActTimer extends javax.swing.JFrame {
         testNumber = testNumber + 10;
     }                                         
 
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        if(questionNumber < numberOfQuestions){
+             questionNumber++;  
+             broadcastNext = 1;
+        }
+        questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions));
+    }                                          
+
 
     // Variables declaration - do not modify                     
     private java.awt.Button ActButton;
     private java.awt.Button SatButton;
     private java.awt.Label Title;
+    private java.awt.Label counterLabel;
     private javax.swing.JPanel endPage;
     private java.awt.Label finishedLabel;
     private java.awt.Label intermissionLabel;
     private java.awt.Label label1;
+    private javax.swing.JButton nextButton;
     private javax.swing.JPanel page1;
+    private java.awt.Label questionNumberLabel;
     private java.awt.Button returnButton;
+    private java.awt.Label secondaryTimerLabel;
     private java.awt.Button startButton;
     private javax.swing.JPanel startPage;
     private java.awt.Label testMapLabel;
@@ -449,3 +529,4 @@ public class SatActTimer extends javax.swing.JFrame {
     private java.awt.Label timerSecondLabel;
     // End of variables declaration                   
 }
+
