@@ -1,5 +1,6 @@
 package end.of.year.project;
 
+import java.awt.Color;
 import java.util.concurrent.TimeUnit;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -13,6 +14,8 @@ public class SatActTimer extends javax.swing.JFrame {
     int questionNumber = 0;
     int numberOfQuestions = 0;
     int broadcastNext = 0;
+    int broadcastSkip = 0;
+    int leftOverTime = 0;
 
     public void loadHomePage() {
         testNumber = 0;
@@ -110,45 +113,74 @@ public class SatActTimer extends javax.swing.JFrame {
         if (testNumber == 0) {
             loadTimerPage();
             activateTimer(45);
+            leftOverTime = 0;
             questionNumber = 0;
             numberOfQuestions = 60;
-            questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions));
+            questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions) + "questions");
             activateSecondaryTimer(30);
 
         }
         if (testNumber == 1) {
             loadTimerPage();
             activateTimer(60);
+            leftOverTime = 0;
+            questionNumber = 0;
+            numberOfQuestions = 60;
+            questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions) + "questions");
             activateSecondaryTimer(30);
         }
         if (testNumber == 2) {
             loadTimerPage();
             activateTimer(35);
+            leftOverTime = 0;
+            questionNumber = 0;
+            numberOfQuestions = 60;
+            questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions) + "questions");
             activateSecondaryTimer(30);
         }
         if (testNumber == 3) {
             loadTimerPage();
             activateTimer(35);
+            leftOverTime = 0;
+            questionNumber = 0;
+            numberOfQuestions = 60;
+            questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions) + "questions");
             activateSecondaryTimer(30);
         }
         if (testNumber == 10) {
             loadTimerPage();
             activateTimer(65);
+            leftOverTime = 0;
+            questionNumber = 0;
+            numberOfQuestions = 60;
+            questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions) + "questions");
             activateSecondaryTimer(30);
         }
         if (testNumber == 11) {
             loadTimerPage();
             activateTimer(35);
+            leftOverTime = 0;
+            questionNumber = 0;
+            numberOfQuestions = 60;
+            questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions) + "questions");
             activateSecondaryTimer(30);
         }
         if (testNumber == 12) {
             loadTimerPage();
             activateTimer(55);
+            leftOverTime = 0;
+            questionNumber = 0;
+            numberOfQuestions = 60;
+            questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions) + "questions");
             activateSecondaryTimer(30);
         }
         if (testNumber == 13) {
             loadTimerPage();
             activateTimer(25);
+            leftOverTime = 0;
+            questionNumber = 0;
+            numberOfQuestions = 60;
+            questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions) + "questions");
             activateSecondaryTimer(30);
         }
     }
@@ -187,9 +219,22 @@ public class SatActTimer extends javax.swing.JFrame {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if(broadcastNext == 1){
+                secondaryTimerLabel.setForeground(Color.GREEN);
+                if (broadcastNext == 1) {
                     subSeconds = subSeconds + answerTime;
                     broadcastNext = 0;
+                } else if (broadcastSkip == 1) {
+                    if (subSeconds < 0) {
+                        subSeconds = subSeconds + answerTime;
+                        broadcastSkip = 0;
+                    } else {
+                        leftOverTime = leftOverTime + subSeconds;
+                        subSeconds = answerTime;
+                    }
+                }
+                if (subSeconds < 0) {
+                    secondaryTimerLabel.setForeground(Color.RED);
+                    secondaryTimerLabel2.setText("Take a guess!");
                 }
                 secondaryTimerLabel.setText(String.valueOf(subSeconds));
                 subSeconds--;
@@ -217,9 +262,10 @@ public class SatActTimer extends javax.swing.JFrame {
         timerMinuteLabel = new java.awt.Label();
         label1 = new java.awt.Label();
         secondaryTimerLabel = new java.awt.Label();
-        counterLabel = new java.awt.Label();
-        nextButton = new javax.swing.JButton();
         questionNumberLabel = new java.awt.Label();
+        skipButton = new java.awt.Button();
+        nextButton = new java.awt.Button();
+        secondaryTimerLabel2 = new java.awt.Label();
         intermissionLabel = new java.awt.Label();
         endPage = new javax.swing.JPanel();
         finishedLabel = new java.awt.Label();
@@ -341,15 +387,25 @@ public class SatActTimer extends javax.swing.JFrame {
         label1.setText(":");
 
         secondaryTimerLabel.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
+        secondaryTimerLabel.setText("30");
 
-        counterLabel.setFont(new java.awt.Font("Dialog", 0, 48)); // NOI18N
+        questionNumberLabel.setText("0/60 questions");
 
-        nextButton.setText("Next");
+        skipButton.setLabel("Skip");
+        skipButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                skipButtonActionPerformed(evt);
+            }
+        });
+
+        nextButton.setLabel("Next");
         nextButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 nextButtonActionPerformed(evt);
             }
         });
+
+        secondaryTimerLabel2.setText("seconds left for this question");
 
         javax.swing.GroupLayout timerPageLayout = new javax.swing.GroupLayout(timerPage);
         timerPage.setLayout(timerPageLayout);
@@ -362,19 +418,22 @@ public class SatActTimer extends javax.swing.JFrame {
                         .addComponent(timerMinuteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(secondaryTimerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(timerPageLayout.createSequentialGroup()
+                                .addComponent(secondaryTimerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(secondaryTimerLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(timerPageLayout.createSequentialGroup()
                                 .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(timerSecondLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, timerPageLayout.createSequentialGroup()
-                        .addComponent(counterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(172, 172, 172))
+                        .addGroup(timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(skipButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(245, 245, 245))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, timerPageLayout.createSequentialGroup()
-                        .addComponent(nextButton)
-                        .addGap(79, 79, 79)
-                        .addComponent(questionNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36))))
+                        .addComponent(questionNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(232, 232, 232))))
         );
         timerPageLayout.setVerticalGroup(
             timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -386,19 +445,20 @@ public class SatActTimer extends javax.swing.JFrame {
                             .addComponent(timerSecondLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(timerMinuteLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(59, 59, 59)
-                .addComponent(secondaryTimerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 100, Short.MAX_VALUE)
-                .addComponent(counterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(timerPageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(timerPageLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(nextButton)
-                        .addGap(70, 70, 70))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, timerPageLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(questionNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(84, 84, 84))))
+                        .addGap(59, 59, 59)
+                        .addComponent(secondaryTimerLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(timerPageLayout.createSequentialGroup()
+                        .addGap(91, 91, 91)
+                        .addComponent(secondaryTimerLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(80, 80, 80)
+                .addComponent(questionNumberLabel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(skipButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(112, Short.MAX_VALUE))
         );
 
         finishedLabel.setText("Congradualtions! You finished the test!");
@@ -495,28 +555,38 @@ public class SatActTimer extends javax.swing.JFrame {
     }                                         
 
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        if(questionNumber < numberOfQuestions){
-             questionNumber++;  
-             broadcastNext = 1;
+        if (questionNumber < numberOfQuestions) {
+            secondaryTimerLabel2.setText("seconds left for this question");
+            questionNumber++;
+            broadcastNext = 1;
         }
-        questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions));
+        questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions) + "questions");
     }                                          
 
+    private void skipButtonActionPerformed(java.awt.event.ActionEvent evt) {                                           
+        if (questionNumber < numberOfQuestions) {
+            secondaryTimerLabel2.setText("seconds left for this question");
+            questionNumber++;
+            broadcastSkip = 1;
+        }
+        questionNumberLabel.setText(String.valueOf(questionNumber) + "/" + String.valueOf(numberOfQuestions) + "questions");
+    }                                          
 
     // Variables declaration - do not modify                     
     private java.awt.Button ActButton;
     private java.awt.Button SatButton;
     private java.awt.Label Title;
-    private java.awt.Label counterLabel;
     private javax.swing.JPanel endPage;
     private java.awt.Label finishedLabel;
     private java.awt.Label intermissionLabel;
     private java.awt.Label label1;
-    private javax.swing.JButton nextButton;
+    private java.awt.Button nextButton;
     private javax.swing.JPanel page1;
     private java.awt.Label questionNumberLabel;
     private java.awt.Button returnButton;
     private java.awt.Label secondaryTimerLabel;
+    private java.awt.Label secondaryTimerLabel2;
+    private java.awt.Button skipButton;
     private java.awt.Button startButton;
     private javax.swing.JPanel startPage;
     private java.awt.Label testMapLabel;
@@ -529,4 +599,5 @@ public class SatActTimer extends javax.swing.JFrame {
     private java.awt.Label timerSecondLabel;
     // End of variables declaration                   
 }
+
 
