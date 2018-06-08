@@ -3,19 +3,11 @@ ACT/SAT Timer Group Project for IB CS SL
 
 Hi Shirley. I figured out how to use GitHub :). This is where you can put your code and experiment with it i.e. making changes etc. Once you have code that is working, you can go to the branch titled "Master" and put it in there. The "Master" branch will be where we have our final copy of the code for submission to Mr. Parker. Good luck coding! - Manisha
 
-package testtimer;
-
-
-public class Timers {
-
-    public static void main(String[] args) {
-        SATTimer f = new SATTimer();
-        f.setVisible(true);
-        
-    }
-    
-}
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package testtimer;
 
 import javax.swing.Timer;
@@ -68,14 +60,16 @@ public class SATTimer extends javax.swing.JFrame {
         secCbox1 = new javax.swing.JComboBox();
         SATstart = new javax.swing.JButton();
         SATstop = new javax.swing.JButton();
+        resetbtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 153, 153));
+        setForeground(new java.awt.Color(255, 204, 204));
 
         jLabel1.setFont(new java.awt.Font("Gadugi", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("SAT Timer");
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        jLabel1.setText("                   SAT and ACT Timer");
 
         SATmin.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         SATmin.setText("00");
@@ -86,6 +80,7 @@ public class SATTimer extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setText(":");
 
+        minCbox.setBackground(new java.awt.Color(153, 255, 153));
         minCbox.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         minCbox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -93,6 +88,7 @@ public class SATTimer extends javax.swing.JFrame {
             }
         });
 
+        secCbox1.setBackground(new java.awt.Color(153, 255, 153));
         secCbox1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         secCbox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,45 +113,63 @@ public class SATTimer extends javax.swing.JFrame {
             }
         });
 
+        resetbtn.setBackground(new java.awt.Color(153, 255, 153));
+        resetbtn.setText("Reset");
+        resetbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                resetbtnMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(100, 100, 100)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(SATmin)
-                    .addComponent(minCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SATstart))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(secCbox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(SATsec)
-                    .addComponent(SATstop))
-                .addContainerGap(121, Short.MAX_VALUE))
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 361, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(100, 100, 100)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(minCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SATstart))
+                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(secCbox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(SATstop)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(139, 139, 139)
+                        .addComponent(SATmin)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 8, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(SATsec))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(138, 138, 138)
+                        .addComponent(resetbtn)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
+                .addGap(39, 39, 39)
                 .addComponent(jLabel1)
-                .addGap(53, 53, 53)
+                .addGap(32, 32, 32)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(SATmin)
-                    .addComponent(SATsec)
-                    .addComponent(jLabel4))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(jLabel4)
+                    .addComponent(SATsec))
+                .addGap(33, 33, 33)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(secCbox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(minCbox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(SATstart)
-                    .addComponent(SATstop))
-                .addContainerGap(103, Short.MAX_VALUE))
+                    .addComponent(SATstop)
+                    .addComponent(SATstart))
+                .addGap(18, 18, 18)
+                .addComponent(resetbtn)
+                .addContainerGap(49, Short.MAX_VALUE))
         );
 
         pack();
@@ -187,8 +201,9 @@ public class SATTimer extends javax.swing.JFrame {
                 }                
                 if (min < 0) {
                     JOptionPane.showMessageDialog(rootPane, "Times up! ", "Stopped", 0);
-                    min = 0;
-                    sec = 0;
+                    min = 1;
+                    sec = 1;
+                    time.stop();
                 } else {
                     sec--;
                     if (sec < 10) {
@@ -220,6 +235,16 @@ public class SATTimer extends javax.swing.JFrame {
         stop = true;
         time.stop();
     }                                       
+
+    private void resetbtnMouseClicked(java.awt.event.MouseEvent evt) {                                      
+        if(time.isRunning()){
+            time.stop();
+            SATmin.setText("00");
+            SATsec.setText("00");
+            min1 = 0;
+            sec1 = 0;
+        }
+    }                                     
 
     /**
      * @param args the command line arguments
@@ -264,7 +289,9 @@ public class SATTimer extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JComboBox minCbox;
+    private javax.swing.JButton resetbtn;
     private javax.swing.JComboBox secCbox1;
     // End of variables declaration                   
 }
+
 
